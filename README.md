@@ -12,8 +12,6 @@
 
 具体服务参考要求
 
-![image-20250527193609089](C:\Users\Mason\AppData\Roaming\Typora\typora-user-images\image-20250527193609089.png)
-
 ###  办理结账
 
 详细的账单由后端生成，前端发送房间号，请求获得押金，住宿账单和空调账单，并在前端完成费用的计算和打印
@@ -35,8 +33,6 @@
 主要的功能是集中监控客房空调运行情况，并生成详细的统计报表
 
 具体见详细要求
-
-![image-20250527201955423](C:\Users\Mason\AppData\Roaming\Typora\typora-user-images\image-20250527201955423.png)
 
 展示模块如下(以房间为单位)
 
