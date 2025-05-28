@@ -47,19 +47,19 @@ const total = ref(0);//应付总金额
 onMounted(async () => {
   try {
     // 向后端请求账单数据
-    // const res = await axios.post('/api/checkout', {
-    //   roomNumber: props.roomNumber,
-    // });
-    // const data = res.data;
+    const res = await axios.post('/api/checkout', {
+      roomNumber: props.roomNumber,
+    });
+    const data = res.data;
 
-    const data = {
-      stayFee: 1500,
-      acUsage: 12.5,
-      acFee: 15,
-      deposit: props.deposit,
-      refund: 0,
-      total: 15
-    };
+    // const data = {
+    //   stayFee: 1500,
+    //   acUsage: 12.5,
+    //   acFee: 15,
+    //   deposit: props.deposit,
+    //   refund: 0,
+    //   total: 15
+    // };
     stayFee.value = data.stayFee;
     acUsage.value = data.acUsage;
     acFee.value = data.acFee;

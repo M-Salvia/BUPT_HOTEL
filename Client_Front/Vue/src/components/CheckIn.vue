@@ -4,11 +4,11 @@
     <form @submit.prevent="handleCheckIn">
       <div>
         <label>身份证号：</label>
-        <input v-model="idNumber" maxlength="18" required />
+        <input v-model="idCard" maxlength="18" required />
       </div>
       <div>
         <label>入住天数：</label>
-        <input v-model.number="days" type="number" min="1" required />
+        <input v-model.number="day" type="number" min="1" required />
       </div>
       <div>
         <label>押金(一晚200): </label>
@@ -24,9 +24,10 @@
 import { computed, ref } from 'vue';
 import axios from 'axios';
 
-const idNumber = ref('');
-const days = ref(1);
-const deposit = computed(() => days.value * 200);
+const idCard = ref('');
+const type = ref(1);
+const day = ref(1);
+const deposit = computed(() => day.value * 200);
 const error = ref('');
 
 const emit = defineEmits(['check-in-success']);
@@ -34,11 +35,11 @@ const emit = defineEmits(['check-in-success']);
 // 假设有一个后端API接口 /api/checkin,返回 { roomNumber}
 async function handleCheckIn() {
   error.value = '';
-//   if (!/^\d{17}[\dXx]$/.test(idNumber.value)) {
-//     error.value = '请输入有效的18位身份证号';
-//     return;
-//   }
-  if (days.value < 1) {
+  if (!/^\d{17}[\dXx]$/.test(idCard.value)) {
+    error.value = '请输入有效的18位身份证号';
+    return;
+  }
+  if (day.value < 1) {
     error.value = '入住天数需大于0';
     return;
   }
@@ -47,30 +48,31 @@ async function handleCheckIn() {
     roomNumber: '402',
   };
     emit('check-in-success', {
-        idNumber: idNumber.value,
-        days: days.value,
+        idCard: idCard.value,
+        days: day.value,
+        type: type.value,
         deposit: deposit.value,
         roomNumber: data.roomNumber,
-        wifiPassword: data.roomNumber + '888188'
+        wifiPassword: data.roomNumber + '88888'
     });
-// try {
-//     // 使用axios发送请求到后端
-//     const res = await axios.post('/api/checkin', {
-//         idNumber: idNumber.value,
-//         days: days.value,
-//         deposit: deposit.value
-//     });
-//     const data = res.data;
-//     emit('check-in-success', {
-//         idNumber: idNumber.value,
-//         days: days.value,
-//         deposit: deposit.value,
-//         roomNumber: data.roomNumber,
-//         wifiPassword: data.roomNumber + '88888'
-//     });
-// } catch (e: any) {
-//     error.value = e.response?.data?.message || e.message || '办理失败，请重试';
-// }
+try {
+    // 使用axios发送请求到后端
+    const res = await axios.post('/api/checkin', {
+        idCard: idCard.value,
+        day: day.value,
+        type: type.value,
+    });
+    const data = res.data;
+    emit('check-in-success', {
+        idCard: idCard.value,
+        day: day.value,
+        deposit: deposit.value,
+        roomNumber: data.roomNumber,
+        wifiPassword: data.roomNumber + '88888'
+    });
+} catch (e: any) {
+    error.value = e.response?.data?.message || e.message || '办理失败，请重试';
+}
 }
 </script>
 <style scoped>
