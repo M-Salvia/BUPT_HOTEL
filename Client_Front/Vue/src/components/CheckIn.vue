@@ -51,7 +51,7 @@ async function handleCheckIn() {
         days: days.value,
         deposit: deposit.value,
         roomNumber: data.roomNumber,
-        wifiPassword: data.roomNumber + '88888'
+        wifiPassword: data.roomNumber + '888188'
     });
 // try {
 //     // 使用axios发送请求到后端
