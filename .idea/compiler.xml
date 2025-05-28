@@ -9,9 +9,13 @@
         <module name="Server_Back" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Client_Back" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Client_Back" options="-parameters" />
       <module name="Server_Back" options="-parameters" />
     </option>
   </component>
