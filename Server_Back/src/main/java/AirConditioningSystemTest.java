@@ -120,9 +120,9 @@ class ServiceObject {
             this.currentTemp = Math.max(targetTemp, this.currentTemp - getChangeRate());
         }
         // 自动回温机制（每分钟回温1度）
-        if (this.currentTemp < this.initialTemp) {
-            this.currentTemp = Math.min(this.initialTemp, this.currentTemp + 1.0f); // 每分钟回温1度
-        }
+//        if (this.currentTemp < this.initialTemp) {
+//            this.currentTemp = Math.min(this.initialTemp, this.currentTemp + 1.0f); // 每分钟回温1度
+//        }
     }
 
     private float getChangeRate() {
@@ -474,9 +474,12 @@ class ScheduleObject {
                 waitQueue.remove(expiredItem);
 
                 // 执行时间片调度的抢占逻辑
-                ServiceQueueItem longestServiceItem = serviceQueue.stream()
-                        .max(Comparator.comparing(ServiceQueueItem::getServeTime))
-                        .orElse(null);
+            ServiceQueueItem longestServiceItem = serviceQueue.stream()
+                    .min(Comparator
+                            .comparing(ServiceQueueItem::getFanSpeed, Comparator.comparing(FanSpeed::getPriority)) // 先比较优先级，选择优先级最低的
+                            .thenComparing(ServiceQueueItem::getServeTime, Comparator.reverseOrder()) // 再比较服务时长，选择服务时长最长的
+                            .thenComparingInt(serviceQueue::indexOf)) // 如果有相同的优先级和服务时长，则选择索引较小的（队列前面）
+                    .orElse(null);
 
                 if (longestServiceItem != null) {
                     preemptService(longestServiceItem, expiredItem.getRequestObject());
