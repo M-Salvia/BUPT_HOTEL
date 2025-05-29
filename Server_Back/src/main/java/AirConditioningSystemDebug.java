@@ -30,7 +30,7 @@ public class AirConditioningSystemDebug {
             scheduler.printStatus();  // 打印当前状态
 
             // 模拟请求 5 - 高速风，时间片调度（风速与请求4相同）
-            RequestObject req5 = new RequestObject("105", 21.0f, FanSpeed.HIGH, 28.0f);
+            RequestObject req5 = new RequestObject("105", 21.0f, FanSpeed.MEDIUM, 28.0f);
             scheduler.receiveRequest(req5);  // 高速风请求，应该启动时间片调度
             scheduler.printStatus();  // 打印当前状态
 

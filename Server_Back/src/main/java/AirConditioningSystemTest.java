@@ -5,23 +5,23 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 enum FanSpeed {
-    LOW(1, "低速", 0.5f),
-    MEDIUM(2, "中速", 1.0f),
-    HIGH(3, "高速", 1.5f);
+    LOW(1, "低速", 0.33f),    // 低速风，每三分钟降低1度
+    MEDIUM(2, "中速", 0.5f),  // 中速风，每两分钟降低1度
+    HIGH(3, "高速", 1.0f);    // 高速风，每分钟降低1度
 
     private final int priority;
     private final String description;
-    private final float feeRate;
+    private final float changeRate;  // 改为温度变化率
 
-    FanSpeed(int priority, String description, float feeRate) {
+    FanSpeed(int priority, String description, float changeRate) {
         this.priority = priority;
         this.description = description;
-        this.feeRate = feeRate;
+        this.changeRate = changeRate;
     }
 
     public int getPriority() { return priority; }
     public String getDescription() { return description; }
-    public float getFeeRate() { return feeRate; }
+    public float getChangeRate() { return changeRate; }  // 改为获取温度变化率
 }
 
 // 请求对象
@@ -120,18 +120,13 @@ class ServiceObject {
             this.currentTemp = Math.max(targetTemp, this.currentTemp - getChangeRate());
         }
         // 自动回温机制（每分钟回温1度）
-        if (this.currentTemp < this.initialTemp) {
-            this.currentTemp = Math.min(this.initialTemp, this.currentTemp + 1.0f); // 每分钟回温1度
-        }
+//        if (this.currentTemp < this.initialTemp) {
+//            this.currentTemp = Math.min(this.initialTemp, this.currentTemp + 1.0f); // 每分钟回温1度
+//        }
     }
 
     private float getChangeRate() {
-        switch (fanSpeed) {
-            case HIGH: return 1.0f; // 高速风，每分钟降低1度
-            case MEDIUM: return 0.5f; // 中速风，每两分钟降低1度
-            case LOW: return 0.33f; // 低速风，每三分钟降低1度
-            default: return 0;
-        }
+        return fanSpeed.getChangeRate();
     }
 
     public int getServiceTime() {
@@ -151,8 +146,14 @@ class ServiceObject {
     }
 
     public float calculateFee() {
-        int minutes = getServiceTime();
-        this.fee = minutes * fanSpeed.getFeeRate(); // 计算费用
+        // 计算初始温度和当前温度的差值（降低了多少度）
+        float tempDifference = initialTemp - currentTemp;
+        // 如果温度降低了，按每度1元收费
+        if (tempDifference > 0) {
+            this.fee = tempDifference;
+        } else {
+            this.fee = 0.0f; // 如果温度没有降低，不收费
+        }
         return this.fee;
     }
 
@@ -396,10 +397,10 @@ class ScheduleObject {
 
         for (ServiceQueueItem item : serviceQueue) {
             item.updateServeTime();
-            item.calculateCurrentFee();
-
             ServiceObject service = item.getServiceObject();
             service.updateCurrentTemp(service.getTargetTemp());
+            item.updateCurrentTemp(); // 同步更新ServiceQueueItem中的温度
+            item.calculateCurrentFee(); // 重新计算费用
 
             // 检查是否达到目标温度
             if (service.isTargetReached()) {
@@ -474,9 +475,12 @@ class ScheduleObject {
                 waitQueue.remove(expiredItem);
 
                 // 执行时间片调度的抢占逻辑
-                ServiceQueueItem longestServiceItem = serviceQueue.stream()
-                        .max(Comparator.comparing(ServiceQueueItem::getServeTime))
-                        .orElse(null);
+            ServiceQueueItem longestServiceItem = serviceQueue.stream()
+                    .min(Comparator
+                            .comparing(ServiceQueueItem::getFanSpeed, Comparator.comparing(FanSpeed::getPriority)) // 先比较优先级，选择优先级最低的
+                            .thenComparing(ServiceQueueItem::getServeTime, Comparator.reverseOrder()) // 再比较服务时长，选择服务时长最长的
+                            .thenComparingInt(serviceQueue::indexOf)) // 如果有相同的优先级和服务时长，则选择索引较小的（队列前面）
+                    .orElse(null);
 
                 if (longestServiceItem != null) {
                     preemptService(longestServiceItem, expiredItem.getRequestObject());
@@ -568,7 +572,6 @@ class ServiceQueueItem {
         this.startTime = serviceObject.getStartTime();
         this.targetTemp = serviceObject.getTargetTemp();
         this.currentTemp = serviceObject.getCurrentTemp();
-        this.feeRate = fanSpeed.getFeeRate();
     }
 
     public void updateServeTime() {
@@ -587,6 +590,10 @@ class ServiceQueueItem {
 
     public boolean isTargetReached() {
         return serviceObject.isTargetReached();
+    }
+
+    public void updateCurrentTemp() {
+        this.currentTemp = this.serviceObject.getCurrentTemp();
     }
 
     // Getters
@@ -676,7 +683,6 @@ class DetailRecord {
         this.serviceDuration = serviceDuration;
         this.fanSpeed = fanSpeed;
         this.currentFee = currentFee;
-        this.feeRate = fanSpeed.getFeeRate();
         this.initialTemp = initialTemp;
         this.targetTemp = targetTemp;
         this.finalTemp = finalTemp;
