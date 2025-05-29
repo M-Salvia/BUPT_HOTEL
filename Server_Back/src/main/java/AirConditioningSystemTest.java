@@ -137,7 +137,17 @@ class ServiceObject {
     public int getServiceTime() {
         if (startTime == null) return 0;
         Date endTimeToUse = (endTime != null) ? endTime : new Date();
-        return (int) ((endTimeToUse.getTime() - startTime.getTime()) / 60000);
+
+        // 计算毫秒差
+        long timeDifferenceMillis = endTimeToUse.getTime() - startTime.getTime();
+
+        // 转换为秒并四舍五入
+        long timeDifferenceSeconds = Math.round(timeDifferenceMillis / 1000.0); // 转换为秒并四舍五入
+        Date a = startTime;
+        Date b = endTimeToUse;
+
+        // 返回以秒为单位的时长
+        return (int) timeDifferenceSeconds;
     }
 
     public float calculateFee() {
@@ -201,7 +211,7 @@ class ScheduleObject {
         this.maxWaitCount = 2;
         this.serviceQueue = new ArrayList<>();
         this.waitQueue = new ArrayList<>();
-        this.timeSlice = 120; // 120秒
+        this.timeSlice = 5; // 120秒
         this.totalRooms = 5;
         this.detailRecords = new ArrayList<>();
         this.scheduler = Executors.newScheduledThreadPool(2);
@@ -418,7 +428,7 @@ class ScheduleObject {
             ServiceObject service = itemToRemove.getServiceObject();
             service.releaseService();
 
-            // 生成详单
+            // ��成详单
             generateDetailRecord(service, itemToRemove.getServeTime());
 
             // 从服务队列移除
@@ -475,19 +485,19 @@ class ScheduleObject {
         }
     }
 
-    private void generateDetailRecord(ServiceObject service, int waitTime) {
+    private void generateDetailRecord(ServiceObject service, int serveTimeInSeconds) {
         DetailRecord record = new DetailRecord(
                 service.getRoomId(),
                 new Date(), // 请求时间（简化）
                 service.getStartTime(),
                 service.getEndTime(),
-                service.getServiceTime(),
+                serveTimeInSeconds, // 以秒为单位的服务时长
                 service.getFanSpeed(),
                 service.getFee(),
                 service.getCurrentTemp(), // 简化，实际应该记录初始温度
                 service.getTargetTemp(),
                 service.getCurrentTemp(),
-                waitTime
+                serveTimeInSeconds // 这里也传秒，保持一致
         );
 
         detailRecords.add(record);

@@ -20,6 +20,10 @@ public class AirConditioningSystemDebug {
             scheduler.receiveRequest(req3);  // 第三个请求，加入队列
             scheduler.printStatus();  // 打印当前状态
 
+            // 模拟房间温度变化
+            System.out.println("等一会========================================================");
+            Thread.sleep(10000);  // 模拟一段时间，等待服务时间流逝（2秒）
+
             // 模拟请求 4 - 高速风，抢占低速风服务
             RequestObject req4 = new RequestObject("104", 19.0f, FanSpeed.MEDIUM, 29.0f); // 初始温度29
             scheduler.receiveRequest(req4);  // 高速风请求，应该抢占低速风的服务
