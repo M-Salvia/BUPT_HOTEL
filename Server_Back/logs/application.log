@@ -1,0 +1,41 @@
+2025-06-06T14:50:58.638+08:00  INFO 82552 --- [Server_Back] [main] o.m.server_back.ServerBackApplication    : Starting ServerBackApplication using Java 21.0.7 with PID 82552 (D:\Project\BUPT_HOTEL\Server_Back\target\classes started by Mason in D:\Project\BUPT_HOTEL\Server_Back)
+2025-06-06T14:50:58.640+08:00  INFO 82552 --- [Server_Back] [main] o.m.server_back.ServerBackApplication    : No active profile set, falling back to 1 default profile: "default"
+2025-06-06T14:50:59.004+08:00  INFO 82552 --- [Server_Back] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-06T14:50:59.025+08:00  INFO 82552 --- [Server_Back] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 JPA repository interfaces.
+2025-06-06T14:50:59.070+08:00 DEBUG 82552 --- [Server_Back] [main] org.apache.ibatis.logging.LogFactory     : Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-06-06T14:50:59.281+08:00  INFO 82552 --- [Server_Back] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-06-06T14:50:59.289+08:00  INFO 82552 --- [Server_Back] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-06T14:50:59.289+08:00  INFO 82552 --- [Server_Back] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-06T14:50:59.316+08:00  INFO 82552 --- [Server_Back] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-06T14:50:59.316+08:00  INFO 82552 --- [Server_Back] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 645 ms
+2025-06-06T14:50:59.348+08:00 DEBUG 82552 --- [Server_Back] [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2025-06-06T14:50:59.363+08:00  INFO 82552 --- [Server_Back] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-06-06T14:50:59.435+08:00  INFO 82552 --- [Server_Back] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@ca8ef3a
+2025-06-06T14:50:59.436+08:00  INFO 82552 --- [Server_Back] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-06-06T14:50:59.479+08:00  INFO 82552 --- [Server_Back] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-06T14:50:59.506+08:00  INFO 82552 --- [Server_Back] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-06-06T14:50:59.533+08:00  INFO 82552 --- [Server_Back] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-06-06T14:50:59.684+08:00  INFO 82552 --- [Server_Back] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-06T14:50:59.723+08:00  WARN 82552 --- [Server_Back] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-06T14:50:59.723+08:00  WARN 82552 --- [Server_Back] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-06-06T14:50:59.733+08:00  INFO 82552 --- [Server_Back] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-06T14:50:59.899+08:00  INFO 82552 --- [Server_Back] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-06T14:50:59.902+08:00  INFO 82552 --- [Server_Back] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-06T14:51:00.160+08:00  WARN 82552 --- [Server_Back] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-06T14:51:00.352+08:00 DEBUG 82552 --- [Server_Back] [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2025-06-06T14:51:00.390+08:00  INFO 82552 --- [Server_Back] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-06-06T14:51:00.396+08:00  INFO 82552 --- [Server_Back] [main] o.m.server_back.ServerBackApplication    : Started ServerBackApplication in 2.042 seconds (process running for 2.395)
+2025-06-06T14:51:18.815+08:00  INFO 82552 --- [Server_Back] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-06T14:51:18.831+08:00  INFO 82552 --- [Server_Back] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-06-06T14:51:18.833+08:00 DEBUG 82552 --- [Server_Back] [SpringApplicationShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2025-06-06T14:51:18.834+08:00  INFO 82552 --- [Server_Back] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-06T14:51:18.835+08:00  INFO 82552 --- [Server_Back] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-06-06T14:51:18.840+08:00  INFO 82552 --- [Server_Back] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-06-06T14:51:18.840+08:00 DEBUG 82552 --- [Server_Back] [SpringApplicationShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'

@@ -26,29 +26,29 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import axios from 'axios';
 import qs from 'qs';
+import { ref } from 'vue';
 const idCard = ref('');
 const type = ref(1);
 const error = ref('');
 
 const emit = defineEmits(['check-in-success']);
 const roomTypes = [
-  { id: 1, name: '标准单人间', price: 300 },
-  { id: 2, name: '标准双人间', price: 450 },
-  { id: 3, name: '豪华单人间', price: 600 },
-  { id: 4, name: '豪华双人间', price: 800 },
-  { id: 5, name: '总统套房', price: 1500 },
+  { id: 1, name: '房型一', price: 100 },
+  { id: 2, name: '房型二', price: 125 },
+  { id: 3, name: '房型三', price: 150 },
+  { id: 4, name: '房型四', price: 200 },
+  { id: 5, name: '房型五', price: 100 },
 ];
 
 // 假设有一个后端API接口 /api/checkin,返回 { roomNumber}
 async function handleCheckIn() {
   error.value = '';
-  if (!/^\d{17}[\dXx]$/.test(idCard.value)) {
-    error.value = '请输入有效的18位身份证号';
-    return;
-  }
+  // if (!/^\d{17}[\dXx]$/.test(idCard.value)) {
+  //   error.value = '请输入有效的18位身份证号';
+  //   return;
+  // }
     const typeNum = Number(type.value);
   if (!Number.isInteger(typeNum) || typeNum < 1 || typeNum > 5) {
     error.value = '房型只能是数字1到5';
@@ -66,10 +66,13 @@ try {
   // 根据状态码处理
   if (res.status === 201) {
     const data = res.data;  // 这里 data 是后端返回的 roomID 字符串
+     const selectedRoom = roomTypes.find(r => r.id === type.value);
     emit('check-in-success', {
       idCard: idCard.value,
       roomNumber: data,  // 直接把字符串赋给 roomNumber
-      wifiPassword: data + '88888'
+      wifiPassword: data + '88888',
+      roomType: selectedRoom?.name,
+      roomPrice: selectedRoom?.price
     });
     alert('入住成功！房间号：' + data);
   } else {

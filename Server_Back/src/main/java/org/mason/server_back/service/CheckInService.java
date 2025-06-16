@@ -15,6 +15,9 @@ public class CheckInService {
     @Autowired
     private AccommodationOrderMapper orderMapper;  // 订单Mapper，用于插入订单
 
+    @Autowired
+    private ServiceScheduler schedulerService;
+
     /**
      * 创建住宿订单
      *
@@ -26,10 +29,12 @@ public class CheckInService {
         // 1. 查找一个空闲房间
         String roomId = roomService.findAvailableRoom(type);
 
+
         if (roomId != null) {
             // 2. 创建订单对象
             AccommodationOrder order = new AccommodationOrder(idCard, roomId);
-
+            // 假设你有 AccommodationOrder order = new AccommodationOrder(orderId, roomId);
+            ServiceScheduler.orderRoomMap.put(order.getOrderId(), order.getRoomId());
             // 3. 插入订单到数据库
             int rows = orderMapper.insert(order);
             if (rows > 0) {

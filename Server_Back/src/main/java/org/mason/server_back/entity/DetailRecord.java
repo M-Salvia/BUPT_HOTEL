@@ -1,51 +1,86 @@
 package org.mason.server_back.entity;
 
-import java.util.Calendar;
-import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.IdType;
+import java.time.LocalDateTime;
 
+@TableName("DetailRecord") // 表名，注意大小写敏感时应与数据库一致
 public class DetailRecord {
 
-    // 详单，每一次服务对应一个详单
-    private long id;              // 唯一自增主键
-    private String roomId;        // 房间号（房间类的主键）
-    private Date requestTime;     // 请求时间
-    private Date serviceStartTime; // 服务开始时间
-    private Date serviceEndTime;   // 服务结束时间
-    private long serviceDuration;  // 服务时长（秒）
-    private String fanSpeed;      // 风速
-    private double currentFee;    // 当前费用
-    private double feeRate;       // 费率
+    @TableId(value = "DetailRecord_id", type = IdType.AUTO)
+    private Long detailRecordId;
+
+    @TableField("order_Id")
+    private String orderId;
+
+    @TableField("room_Id")
+    private String roomId;
+
+    @TableField("requestTime")
+    private LocalDateTime requestTime;
+
+    @TableField("serviceStartTime")
+    private LocalDateTime serviceStartTime;
+
+    @TableField("serviceEndTime")
+    private LocalDateTime serviceEndTime;
+
+    @TableField("serviceDuration")
+    private long serviceDuration;
+
+    @TableField("fanSpeed")
+    private FanSpeed fanSpeed;
+
+    @TableField("currentFee")
+    private double currentFee;
+
+    @TableField("feeRate")
+    private double feeRate;
 
     // 构造方法
-    public DetailRecord(long id, String roomId, Date requestTime, Date serviceStartTime, Date serviceEndTime, String fanSpeed, double currentFee, double feeRate) {
-        this.id = id;
+    public DetailRecord(Long detailRecordId,
+                        String orderId,
+                        String roomId,
+                        LocalDateTime requestTime,
+                        LocalDateTime serviceStartTime,
+                        LocalDateTime serviceEndTime,
+                        long serviceDuration,
+                        FanSpeed fanSpeed,
+                        double currentFee,
+                        double feeRate) {
+        this.detailRecordId = detailRecordId;
         this.roomId = roomId;
-        this.requestTime = requestTime;
+        this.orderId = orderId;
+        this.requestTime = requestTime; // 请求时间使用服务开始时间
         this.serviceStartTime = serviceStartTime;
         this.serviceEndTime = serviceEndTime;
+        this.serviceDuration = serviceDuration;
         this.fanSpeed = fanSpeed;
         this.currentFee = currentFee;
         this.feeRate = feeRate;
-
-        // 计算服务时长，单位为秒
-        if (serviceStartTime != null && serviceEndTime != null) {
-            this.serviceDuration = (serviceEndTime.getTime() - serviceStartTime.getTime()) / 1000; // 将毫秒转为秒
-        } else {
-            this.serviceDuration = 0;  // 如果服务时间无效，设置时长为0
-        }
-
     }
 
+    // 无参构造
+    public DetailRecord() {}
 
+    // Getter 和 Setter
 
-    // Getter 和 Setter 方法
-
-    public long getId() {
-        return id;
+    public Long getDetailRecordId() {
+        return detailRecordId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDetailRecordId(long detailRecordId) {
+        this.detailRecordId = detailRecordId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getRoomId() {
@@ -56,27 +91,27 @@ public class DetailRecord {
         this.roomId = roomId;
     }
 
-    public Date getRequestTime() {
+    public LocalDateTime getRequestTime() {
         return requestTime;
     }
 
-    public void setRequestTime(Date requestTime) {
+    public void setRequestTime(LocalDateTime requestTime) {
         this.requestTime = requestTime;
     }
 
-    public Date getServiceStartTime() {
+    public LocalDateTime getServiceStartTime() {
         return serviceStartTime;
     }
 
-    public void setServiceStartTime(Date serviceStartTime) {
+    public void setServiceStartTime(LocalDateTime serviceStartTime) {
         this.serviceStartTime = serviceStartTime;
     }
 
-    public Date getServiceEndTime() {
+    public LocalDateTime getServiceEndTime() {
         return serviceEndTime;
     }
 
-    public void setServiceEndTime(Date serviceEndTime) {
+    public void setServiceEndTime(LocalDateTime serviceEndTime) {
         this.serviceEndTime = serviceEndTime;
     }
 
@@ -88,11 +123,11 @@ public class DetailRecord {
         this.serviceDuration = serviceDuration;
     }
 
-    public String getFanSpeed() {
+    public FanSpeed getFanSpeed() {
         return fanSpeed;
     }
 
-    public void setFanSpeed(String fanSpeed) {
+    public void setFanSpeed(FanSpeed fanSpeed) {
         this.fanSpeed = fanSpeed;
     }
 
@@ -112,16 +147,16 @@ public class DetailRecord {
         this.feeRate = feeRate;
     }
 
-    // toString() 方法，输出详单信息
     @Override
     public String toString() {
         return "DetailRecord{" +
-                "id=" + id +
+                "detailRecordId=" + detailRecordId +
+                ", orderId='" + orderId + '\'' +
                 ", roomId='" + roomId + '\'' +
                 ", requestTime=" + requestTime +
                 ", serviceStartTime=" + serviceStartTime +
                 ", serviceEndTime=" + serviceEndTime +
-                ", serviceDuration=" + serviceDuration + " seconds" +
+                ", serviceDuration=" + serviceDuration +
                 ", fanSpeed='" + fanSpeed + '\'' +
                 ", currentFee=" + currentFee +
                 ", feeRate=" + feeRate +
